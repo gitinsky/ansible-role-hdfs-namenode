@@ -1,0 +1,12 @@
+---
+- name: format DFS
+  command: bash -c "/opt/hadoop/bin/hdfs namenode -format" creates=/var/hadoop/dfs
+  sudo: yes
+  sudo_user: hadoop
+
+- name: put hdfs-primary.rb eye config file
+  template: src=hdfs/primary.rb dest=/etc/eye/hdfs-primary.rb owner=root group=root mode=0644
+
+- name: load config in eye
+  command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"
+  sudo: yes
