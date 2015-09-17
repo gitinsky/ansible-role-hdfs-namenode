@@ -1,11 +1,11 @@
 ---
-- name: format DFS
-  command: bash -c "/opt/hadoop/bin/hdfs namenode -format" creates=/var/hadoop/dfs
-  sudo: yes
-  sudo_user: hadoop
+#- name: format DFS
+#  command: bash -c "/opt/hadoop/bin/hdfs namenode -format" creates=/var/hadoop/dfs
+#  sudo: yes
+#  sudo_user: hadoop
 
-- name: put hdfs-primary.rb eye config file
-  template: src=hdfs/primary.rb dest=/etc/eye/hdfs-primary.rb owner=root group=root mode=0644
+- name: put hdfs-namenode-{{ env_name }}.rb eye config file
+  template: src=hdfs/namenode.rb dest=/etc/eye/hdfs-namenode-{{ env_name }}.rb owner=root group=root mode=0644 backup=yes
 
 - name: load config in eye
   command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"
