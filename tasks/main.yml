@@ -4,6 +4,12 @@
 #  sudo: yes
 #  sudo_user: hadoop
 
+- name: create {{ hadoop_var_prefix }}/dfs
+  file: state=directory dest={{ hadoop_var_prefix }}/dfs owner={{ hadoop_user }} group={{ hadoop_user }}
+
+- name: create {{ hadoop_var_prefix }}/dfs/name
+  file: state=directory dest={{ hadoop_var_prefix }}/dfs/name owner={{ hadoop_user }} group={{ hadoop_user }}
+
 - name: put hdfs-namenode-{{ env_name }}.rb eye config file
   template: src=hdfs/namenode.rb dest=/etc/eye/hdfs-namenode-{{ env_name }}.rb owner=root group=root mode=0644 backup=yes
 
