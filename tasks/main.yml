@@ -4,6 +4,10 @@
 #  sudo: yes
 #  sudo_user: hadoop
 
+- name: create the name dirs
+  file: path=/{{ item }} state=directory owner={{ hadoop_user }} group={{ hadoop_user }}
+  with_items: "{{ hdfs_namenode_name_dirs }}"
+
 - name: create {{ hadoop_var_prefix }}/dfs
   file: state=directory dest={{ hadoop_var_prefix }}/dfs owner={{ hadoop_user }} group={{ hadoop_user }}
 
