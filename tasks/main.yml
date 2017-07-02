@@ -12,7 +12,17 @@
 
 - name: put hdfs-namenode-{{ env_name }}.rb eye config file
   template: src=hdfs/namenode.rb dest=/etc/eye/hdfs-namenode-{{ env_name }}.rb owner=root group=root mode=0644 backup=yes
+  when: ansible_os_family != "Elbrus"
 
 - name: load config in eye
   command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"
-  sudo: yes
+  become: yes
+  when: ansible_os_family != "Elbrus"
+
+- name: put {{ hadoop_distr_prefix }}/bin/namenode_start.sh
+  template: src=namenode_start.sh dest={{ hadoop_distr_prefix }}/bin/namenode_start.sh
+  when: "ansible_os_family == 'Elbrus'"
+
+- name: chmod {{ hadoop_distr_prefix }}/bin/namenode_start.sh
+  shell: chmod 0755 {{ hadoop_distr_prefix }}/bin/namenode_start.sh
+  when: "ansible_os_family == 'Elbrus'"
