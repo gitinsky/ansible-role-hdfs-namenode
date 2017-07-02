@@ -1,4 +1,5 @@
 hadoop_distr_prefix: /opt/hadoop
 hadoop_var_prefix: /var/hadoop
 hadoop_user: hadoop
+hdfs_datanode_data_dir: [ "file://${hadoop.tmp.dir}/dfs/data" ]
 env_name: default
