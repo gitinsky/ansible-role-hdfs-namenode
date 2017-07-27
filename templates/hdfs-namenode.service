@@ -1,0 +1,18 @@
+[Unit]
+Description=HDFS Namenode Service
+Documentation=https://github.com/kofonfor/ansible-role-hdfs-namenode
+
+[Service]
+LimitNOFILE=65535
+Environment=LC_ALL=en_US.UTF-8
+Environment=LANG=en_US.UTF-8
+Type=simple
+User={{ hadoop_user }}
+Group={{ hadoop_user }}
+ExecStart={{ hadoop_distr_prefix }}/bin/hdfs namenode
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
