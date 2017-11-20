@@ -1,8 +1,8 @@
 ---
 #- name: format DFS
 #  command: bash -c "/opt/hadoop/bin/hdfs namenode -format" creates=/var/hadoop/dfs
-#  sudo: yes
-#  sudo_user: hadoop
+#  become: yes
+#  become_user: hadoop
 
 - name: create the name dirs
   file: path=/{{ item }} state=directory owner={{ hadoop_user }} group={{ hadoop_user }}
