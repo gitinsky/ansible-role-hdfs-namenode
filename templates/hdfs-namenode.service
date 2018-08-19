@@ -13,6 +13,7 @@ ExecStart={{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/bin/hdfs
 StandardOutput=journal
 StandardError=journal
 Restart=always
+RestartSec=40
 
 [Install]
 WantedBy=multi-user.target
