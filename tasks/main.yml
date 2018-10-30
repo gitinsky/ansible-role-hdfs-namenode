@@ -31,7 +31,7 @@
   set_fact: nnpath_exists="{{ nnpath.stat.isdir is defined and nnpath.stat.isdir }}"
 
 - name: print facts
-  debug: msg="nnpath_exists: {{ hostvars[item]['nnpath_exists'] }}"
+  debug: msg="nnpath_exists - {{ hostvars[item]['nnpath_exists'] }}"
   with_items: "{{ groups[hdfs_namenodes_group_name] }}"
 
 - name: resset nn_formatted fact
@@ -42,7 +42,7 @@
   with_items: "{{ groups[hdfs_namenodes_group_name] }}"
 
 - name: print nn_formatted
-  debug: msg="nn_formatted: {{ nn_formatted }}"
+  debug: msg="nn_formatted - {{ nn_formatted }}"
 
 - name: format a namenode
   become: yes
