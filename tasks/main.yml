@@ -23,6 +23,34 @@
   become: yes
   when: "(not (ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>='))) and (not (ansible_os_family == 'Elbrus'))"
 
+- name: check {{ hadoop_var_prefix }}/dfs/name/current on all nodes
+  stat: path={{ hadoop_var_prefix }}/dfs/name/current
+  register: nnpath
+
+- name: set nnpath_exists fact
+  set_fact: nnpath_exists="{{ nnpath.stat.isdir is defined and nnpath.stat.isdir }}"
+
+- name: print facts
+  debug: msg="nnpath_exists: {{ hostvars[item]['nnpath_exists'] }}"
+  with_items: "{{ groups[hdfs_namenodes_group_name] }}"
+
+- name: resset nn_formatted fact
+  set_fact: nn_formatted=False
+
+- name: set nn_formatted fact
+  set_fact: nn_formatted="{{ nn_formatted or hostvars[item]['nnpath_exists'] }}"
+  with_items: "{{ groups[hdfs_namenodes_group_name] }}"
+
+- name: print nn_formatted
+  debug: msg="nn_formatted: {{ nn_formatted }}"
+
+- name: format a namenode
+  become: yes
+  become_user: "{{ hadoop_user }}"
+  shell: "{{ hadoop_distr_prefix }}-{{ env_name }}-{{ hadoop_version }}/bin/hdfs namenode -format"
+  when: "not nn_formatted"
+  run_once: true
+
 - name: put systemd unit file to its destination
   template: src=hdfs-namenode.service dest=/etc/systemd/system/hdfs-namenode-{{ env_name }}.service owner=root group=root mode=0644
   when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>=')"
